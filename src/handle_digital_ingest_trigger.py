@@ -93,7 +93,8 @@ def lambda_handler(event, context):
         if event_type in ['ObjectCreated:Put',
                           'ObjectCreated:CompleteMultipartUpload']:
             """Handles object creation events."""
-            package_id = event['Records'][0]['s3']['object']['key'].split('.')[0]
+            package_id = event['Records'][0]['s3']['object']['key'].split('.')[
+                0]
             environment = [
                 {
                     "name": "PACKAGE_ID",
@@ -115,7 +116,7 @@ def lambda_handler(event, context):
         response = f'Nothing to do for SNS event: {event}'
 
         package_id = attributes.get('package_id', {}).get('Value')
-        
+
         environment = [
             {
                 "name": "PACKAGE_ID",
@@ -128,7 +129,7 @@ def lambda_handler(event, context):
                                 config,
                                 attributes['service']['Value'],
                                 environment)
-            
+
             # Send message with outcome = STARTED
 
     else:

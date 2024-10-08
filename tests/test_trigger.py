@@ -83,6 +83,7 @@ def test_sns_args(mock_config):
         response = json.loads(lambda_handler(message, None))
         assert 'Nothing to do for SNS event:' in response
 
+
 @mock_ssm
 def test_config():
     ssm = boto3.client('ssm', region_name='us-east-1')
