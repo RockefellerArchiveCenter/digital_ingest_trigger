@@ -129,9 +129,6 @@ def lambda_handler(event, context):
                                 config,
                                 attributes['service']['Value'],
                                 environment)
-
-            # Send message with outcome = STARTED
-
     else:
         raise Exception('Unsure how to parse message')
 
