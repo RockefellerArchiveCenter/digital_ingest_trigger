@@ -1,5 +1,5 @@
 # digital_ingest_trigger
-Invokes AWS Elastic Container Service (ECS) tasks based on SNS and S3 messages.
+Invokes AWS Elastic Container Service (ECS) tasks based on SQS and S3 messages.
 
 ## Getting Started
 
@@ -16,9 +16,9 @@ This repository is intended to be deployed as a Lambda script in AWS infrastruct
 
 ### Expected Message Format
 
-The script is designed to consume messages from an AWS S3 Bucket or an AWS Simple Notifications Service (SNS) queue. 
+The script is designed to consume messages from an AWS S3 Bucket or an AWS Simple Queue Service (SQS) queue. 
 
-<!-- SNS messages are expected have the following attributes:
+<!-- SQS messages are expected have the following attributes:
 - `format` - the format of the package (audio or video)
 - `refid` - the ArchivesSpace refid associated with the package
 - `service` - the service which produced the message
