@@ -81,7 +81,7 @@ def lambda_handler(event, context):
         'ecs',
         region_name=environ.get('AWS_DEFAULT_REGION', 'us-east-1'))
 
-    if event['Records'][0].get('s3'):
+    if event['Records'][0].get('eventSource') == 'aws:s3':
         """Handles events from S3 buckets."""
 
         logger.info(f"Received S3 event {event}")
@@ -106,29 +106,31 @@ def lambda_handler(event, context):
                                 'ursa_major',
                                 environment)
 
-    elif event['Records'][0].get('Sns'):
-        """Handles events from SNS."""
+    elif event['Records'][0].get('eventSource') == 'aws:sqs':
+        """Handles events from SQS."""
 
-        logger.info(f"Received SNS event {event}")
+        logger.info("Message batch received.")
 
-        attributes = event['Records'][0]['Sns']['MessageAttributes']
+        for record in event['Records']:
+            attributes = record['messageAttributes']
 
-        response = f'Nothing to do for SNS event: {event}'
+            response = f'Nothing to do for SQS event: {event}'
 
-        package_id = attributes.get('package_id', {}).get('Value')
+            package_id = attributes.get('package_id', {}).get('stringValue')
 
-        environment = [
-            {
-                "name": "PACKAGE_ID",
-                "value": package_id
-            }
-        ]
+            environment = [
+                {
+                    "name": "PACKAGE_ID",
+                    "value": package_id
+                }
+            ]
 
-        if attributes.get('requested_status', {}).get('Value') == START_STATUS:
-            response = run_task(ecs_client,
-                                config,
-                                attributes['service']['Value'],
-                                environment)
+            if attributes.get('requested_status', {}).get(
+                    'stringValue') == START_STATUS:
+                response = run_task(ecs_client,
+                                    config,
+                                    attributes['service']['stringValue'],
+                                    environment)
     else:
         raise Exception('Unsure how to parse message')
 
