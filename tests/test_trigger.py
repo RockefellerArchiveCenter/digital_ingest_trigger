@@ -47,7 +47,7 @@ def test_s3_args(mock_config):
 
 @mock_ecs
 @patch('src.handle_digital_ingest_trigger.get_config')
-def test_sns_args(mock_config):
+def test_sqs_args(mock_config):
     test_cluster_name = "default"
     mock_config.return_value = {
         "AWS_REGION": "us-east-1",
@@ -67,21 +67,21 @@ def test_sns_args(mock_config):
         ],
     )
 
-    with open(Path('fixtures', 'sns.json'), 'r') as df:
+    with open(Path('fixtures', 'sqs.json'), 'r') as df:
         message = json.load(df)
         response = json.loads(lambda_handler(message, None))
         assert len(response['tasks']) == 1
         assert response['tasks'][0]['startedBy'] == 'lambda/digital_ingest_trigger'
         assert response['tasks'][0][
             'taskDefinitionArn'] == f"arn:aws:ecs:us-east-1:{DEFAULT_ACCOUNT_ID}:task-definition/fornax:1"
-        with open(Path('fixtures', 'sns_args.json'), 'r') as af:
+        with open(Path('fixtures', 'sqs_args.json'), 'r') as af:
             args = json.load(af)
             assert response['tasks'][0]['overrides'] == args
 
-    with open(Path('fixtures', 'sns_idle.json'), 'r') as df:
+    with open(Path('fixtures', 'sqs_idle.json'), 'r') as df:
         message = json.load(df)
         response = json.loads(lambda_handler(message, None))
-        assert 'Nothing to do for SNS event:' in response
+        assert 'Nothing to do for SQS event:' in response
 
 
 @mock_ssm
