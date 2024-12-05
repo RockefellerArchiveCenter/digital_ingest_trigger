@@ -28,7 +28,7 @@ def get_config(ssm_parameter_path):
     try:
         ssm_client = boto3.client(
             'ssm',
-            region_name=environ.get('AWS_DEFAULT_REGION', 'us-east-1'))
+            region_name=environ.get('AWS_REGION'))
 
         param_details = ssm_client.get_parameters_by_path(
             Path=ssm_parameter_path,
@@ -79,7 +79,7 @@ def lambda_handler(event, context):
     config = get_config(full_config_path)
     ecs_client = boto3.client(
         'ecs',
-        region_name=environ.get('AWS_DEFAULT_REGION', 'us-east-1'))
+        region_name=environ.get('AWS_REGION'))
 
     if event['Records'][0].get('eventSource') == 'aws:s3':
         """Handles events from S3 buckets."""
