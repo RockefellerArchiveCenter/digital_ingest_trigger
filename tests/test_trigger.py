@@ -5,13 +5,13 @@ from pathlib import Path
 from unittest.mock import patch
 
 import boto3
-from moto import mock_ecs, mock_ssm
+from moto import mock_aws
 from moto.core import DEFAULT_ACCOUNT_ID
 
 from src.handle_digital_ingest_trigger import get_config, lambda_handler
 
 
-@mock_ecs
+@mock_aws
 @patch('src.handle_digital_ingest_trigger.get_config')
 def test_s3_args(mock_config):
     test_cluster_name = "default"
@@ -45,7 +45,7 @@ def test_s3_args(mock_config):
             assert response['tasks'][0]['overrides'] == args
 
 
-@mock_ecs
+@mock_aws
 @patch('src.handle_digital_ingest_trigger.get_config')
 def test_sqs_args(mock_config):
     test_cluster_name = "default"
@@ -84,7 +84,7 @@ def test_sqs_args(mock_config):
         assert 'Nothing to do for SQS event:' in response
 
 
-@mock_ssm
+@mock_aws
 def test_config():
     ssm = boto3.client('ssm', region_name='us-east-1')
     path = "/dev/digital_ingest_trigger"
