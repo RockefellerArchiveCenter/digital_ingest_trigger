@@ -16,7 +16,7 @@
                   "dataType": "String"
               },
               "service": {
-                  "stringValue": "fornax", 
+                  "stringValue": "digital_ingest_assembly", 
                   "dataType": "String"
               }
           },

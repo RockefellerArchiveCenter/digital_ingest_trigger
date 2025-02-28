@@ -22,10 +22,10 @@ def test_s3_args(mock_config):
     client = boto3.client("ecs", region_name="us-east-1")
     client.create_cluster(clusterName=test_cluster_name)
     client.register_task_definition(
-        family="ursa_major",
+        family="digital_ingest_discovery",
         containerDefinitions=[
             {
-                "name": "ursa_major",
+                "name": "digital_ingest_discovery",
                 "image": "docker/hello-world:latest",
                 "cpu": 1024,
                 "memory": 400,
@@ -39,7 +39,7 @@ def test_s3_args(mock_config):
         assert len(response['tasks']) == 1
         assert response['tasks'][0]['startedBy'] == 'lambda/digital_ingest_trigger'
         assert response['tasks'][0][
-            'taskDefinitionArn'] == f"arn:aws:ecs:us-east-1:{DEFAULT_ACCOUNT_ID}:task-definition/ursa_major:1"
+            'taskDefinitionArn'] == f"arn:aws:ecs:us-east-1:{DEFAULT_ACCOUNT_ID}:task-definition/digital_ingest_discovery:1"
         with open(Path('fixtures', 's3_args.json'), 'r') as af:
             args = json.load(af)
             assert response['tasks'][0]['overrides'] == args
@@ -56,10 +56,10 @@ def test_sqs_args(mock_config):
     client = boto3.client("ecs", region_name="us-east-1")
     client.create_cluster(clusterName=test_cluster_name)
     client.register_task_definition(
-        family="fornax",
+        family="digital_ingest_assembly",
         containerDefinitions=[
             {
-                "name": "fornax",
+                "name": "digital_ingest_assembly",
                 "image": "docker/hello-world:latest",
                 "cpu": 1024,
                 "memory": 400,
@@ -73,7 +73,7 @@ def test_sqs_args(mock_config):
         assert len(response['tasks']) == 1
         assert response['tasks'][0]['startedBy'] == 'lambda/digital_ingest_trigger'
         assert response['tasks'][0][
-            'taskDefinitionArn'] == f"arn:aws:ecs:us-east-1:{DEFAULT_ACCOUNT_ID}:task-definition/fornax:1"
+            'taskDefinitionArn'] == f"arn:aws:ecs:us-east-1:{DEFAULT_ACCOUNT_ID}:task-definition/digital_ingest_assembly:1"
         with open(Path('fixtures', 'sqs_args.json'), 'r') as af:
             args = json.load(af)
             assert response['tasks'][0]['overrides'] == args

@@ -103,7 +103,7 @@ def lambda_handler(event, context):
             ]
             response = run_task(ecs_client,
                                 config,
-                                'ursa_major',
+                                'digital_ingest_discovery',
                                 environment)
 
     elif event['Records'][0].get('eventSource') == 'aws:sqs':
