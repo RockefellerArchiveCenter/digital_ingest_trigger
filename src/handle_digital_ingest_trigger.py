@@ -114,7 +114,7 @@ def lambda_handler(event, context):
         for record in event['Records']:
             attributes = record['messageAttributes']
 
-            response = f'Nothing to do for SQS event: {event}'
+            response = f'Nothing to do for SQS event: {record}'
 
             package_id = attributes.get('package_id', {}).get('stringValue')
 
