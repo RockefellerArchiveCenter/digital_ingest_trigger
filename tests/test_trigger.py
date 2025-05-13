@@ -18,7 +18,8 @@ def test_s3_args(mock_config):
     mock_config.return_value = {
         "AWS_REGION": "us-east-1",
         "ECS_CLUSTER": test_cluster_name,
-        "ECS_SUBNET": "subnet"}
+        "ECS_SUBNET": "subnet",
+        "ECS_SECURITY_GROUP": "sg-123456789"}
     client = boto3.client("ecs", region_name="us-east-1")
     client.create_cluster(clusterName=test_cluster_name)
     client.register_task_definition(
@@ -52,7 +53,8 @@ def test_sqs_args(mock_config):
     mock_config.return_value = {
         "AWS_REGION": "us-east-1",
         "ECS_CLUSTER": test_cluster_name,
-        "ECS_SUBNET": "subnet"}
+        "ECS_SUBNET": "subnet",
+        "ECS_SECURITY_GROUP": "sg-123456789"}
     client = boto3.client("ecs", region_name="us-east-1")
     client.create_cluster(clusterName=test_cluster_name)
     client.register_task_definition(
