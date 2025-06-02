@@ -23,7 +23,7 @@ SQS messages are expected have the following attributes:
 - `refid` - the ArchivesSpace refid associated with the package
 - `service` - the service which produced the message
 - `outcome` - the outcome of the service (usually `SUCCESS` or `FAILURE`, but may also be `COMPLETE`)
-- `message` - - a detailed message about the service outcome (optional)
+- `message` - a detailed message about the service outcome (optional)
 - `rights_ids` - rights IDs associated with the package (optional)
 
 ### Configured Actions
