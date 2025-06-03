@@ -16,27 +16,19 @@ This repository is intended to be deployed as a Lambda script in AWS infrastruct
 
 ### Expected Message Format
 
-The script is designed to consume messages from an AWS S3 Bucket or an AWS Simple Queue Service (SQS) queue. 
-
-SQS messages are expected have the following attributes:
-- `format` - the format of the package (audio or video)
-- `refid` - the ArchivesSpace refid associated with the package
+The script is designed to consume message from an AWS Simple Queue Service (SQS) queue. These messages are expected have the following attributes:
+- `package_id` - an identifier associated with the package
 - `service` - the service which produced the message
-- `outcome` - the outcome of the service (usually `SUCCESS` or `FAILURE`, but may also be `COMPLETE`)
-- `message` - a detailed message about the service outcome (optional)
-- `rights_ids` - rights IDs associated with the package (optional)
+- `requested_status` - the desired status for the service (`STARTED`)
 
 ### Configured Actions
 
 The script takes the following actions:
 - S3 events:
-    - PutObject events trigger the [`digitized_image_validation`](https://github.com/RockefellerArchiveCenter/digitized_image_validation) ECS task.
+    - PutObject events trigger the [`digital_ingest_discovery`](https://github.com/RockefellerArchiveCenter/digital_ingest_discovery) ECS task.
 - SNS events:
-    - from `validation` service:
-        -  messages with outcome `SUCCESS` scale up [`digitized_image_qc`](https://github.com/RockefellerArchiveCenter/digitized_image_qc) ECS service, if necessary.
-    - from `qc` service:
-        -  messages with outcome `SUCCESS` trigger the [`digitized_image_packaging`](https://github.com/RockefellerArchiveCenter/digitized_image_packaging) ECS task.
-        -  messages with outcome `COMPLETE` scale down the [`digitized_image_qc`](https://github.com/RockefellerArchiveCenter/digitized_image_qc) ECS service.
+    - Messages with a `requested_status` of `STARTED` result in the triggering of the service identified
+    in the `service` attribute with the `package_id` passed into the envirohment.
 
 ## License
 
