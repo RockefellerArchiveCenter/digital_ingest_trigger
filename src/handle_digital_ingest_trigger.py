@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import json
 import logging
 import traceback
 from os import environ
@@ -49,7 +48,7 @@ def get_config(ssm_parameter_path):
 
 
 def run_task(ecs_client, config, task_definition, environment):
-    return ecs_client.run_task(
+    service_response = ecs_client.run_task(
         cluster=config.get('ECS_CLUSTER'),
         launchType='FARGATE',
         networkConfiguration={
@@ -71,6 +70,7 @@ def run_task(ecs_client, config, task_definition, environment):
             ]
         }
     )
+    return ", ".join([t['taskArn'] for t in service_response['tasks']])
 
 
 def lambda_handler(event, context):
@@ -84,11 +84,11 @@ def lambda_handler(event, context):
     if event['Records'][0].get('eventSource') == 'aws:s3':
         """Handles events from S3 buckets."""
 
-        logger.info(f"Received S3 event {event}")
+        logger.info("Received S3 event")
 
         event_type = event['Records'][0]['eventName']
 
-        response = f'Nothing to do for S3 event: {event}'
+        response = 'Nothing to do for S3 event'
 
         if event_type in ['ObjectCreated:Put',
                           'ObjectCreated:CompleteMultipartUpload']:
@@ -101,10 +101,11 @@ def lambda_handler(event, context):
                     "value": package_id
                 }
             ]
-            response = run_task(ecs_client,
-                                config,
-                                'digital_ingest_discovery',
-                                environment)
+            task_id = run_task(ecs_client,
+                               config,
+                               'digital_ingest_discovery',
+                               environment)
+            response = f"Task {task_id} with definition digital_ingest_discovery started for package {package_id}."
 
     elif event['Records'][0].get('eventSource') == 'aws:sqs':
         """Handles events from SQS."""
@@ -114,7 +115,7 @@ def lambda_handler(event, context):
         for record in event['Records']:
             attributes = record['messageAttributes']
 
-            response = f'Nothing to do for SQS event: {record}'
+            response = 'Nothing to do for SQS event'
 
             package_id = attributes.get('package_id', {}).get('stringValue')
 
@@ -127,12 +128,12 @@ def lambda_handler(event, context):
 
             if attributes.get('requested_status', {}).get(
                     'stringValue') == START_STATUS:
-                response = run_task(ecs_client,
-                                    config,
-                                    attributes['service']['stringValue'],
-                                    environment)
+                task_id = run_task(ecs_client,
+                                   config,
+                                   attributes['service']['stringValue'],
+                                   environment)
+                response = f"Task {task_id} with definition {attributes['service']['stringValue']} started for package {package_id}."
     else:
         raise Exception('Unsure how to parse message')
 
     logger.info(response)
-    return json.dumps(response, default=str)

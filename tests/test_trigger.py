@@ -36,14 +36,21 @@ def test_s3_args(mock_config):
 
     with open(Path('fixtures', 's3_put.json'), 'r') as df:
         message = json.load(df)
-        response = json.loads(lambda_handler(message, None))
-        assert len(response['tasks']) == 1
-        assert response['tasks'][0]['startedBy'] == 'lambda/digital_ingest_trigger'
-        assert response['tasks'][0][
+        lambda_handler(message, None)
+
+        tasks = client.list_tasks(cluster=test_cluster_name)
+        assert len(tasks['taskArns']) == 1
+
+        task_response = client.describe_tasks(
+            cluster=test_cluster_name,
+            tasks=[tasks['taskArns'][0]])
+
+        assert task_response['tasks'][0]['startedBy'] == 'lambda/digital_ingest_trigger'
+        assert task_response['tasks'][0][
             'taskDefinitionArn'] == f"arn:aws:ecs:us-east-1:{DEFAULT_ACCOUNT_ID}:task-definition/digital_ingest_discovery:1"
         with open(Path('fixtures', 's3_args.json'), 'r') as af:
             args = json.load(af)
-            assert response['tasks'][0]['overrides'] == args
+            assert task_response['tasks'][0]['overrides'] == args
 
 
 @mock_aws
@@ -71,19 +78,29 @@ def test_sqs_args(mock_config):
 
     with open(Path('fixtures', 'sqs.json'), 'r') as df:
         message = json.load(df)
-        response = json.loads(lambda_handler(message, None))
-        assert len(response['tasks']) == 1
-        assert response['tasks'][0]['startedBy'] == 'lambda/digital_ingest_trigger'
-        assert response['tasks'][0][
+        lambda_handler(message, None)
+
+        tasks = client.list_tasks(cluster=test_cluster_name)
+        assert len(tasks['taskArns']) == 1
+
+        task_response = client.describe_tasks(
+            cluster=test_cluster_name,
+            tasks=[tasks['taskArns'][0]])
+
+        assert task_response['tasks'][0]['startedBy'] == 'lambda/digital_ingest_trigger'
+        assert task_response['tasks'][0][
             'taskDefinitionArn'] == f"arn:aws:ecs:us-east-1:{DEFAULT_ACCOUNT_ID}:task-definition/digital_ingest_assembly:1"
         with open(Path('fixtures', 'sqs_args.json'), 'r') as af:
             args = json.load(af)
-            assert response['tasks'][0]['overrides'] == args
+            assert task_response['tasks'][0]['overrides'] == args
 
+    """No new task started."""
     with open(Path('fixtures', 'sqs_idle.json'), 'r') as df:
         message = json.load(df)
-        response = json.loads(lambda_handler(message, None))
-        assert 'Nothing to do for SQS event:' in response
+        lambda_handler(message, None)
+
+        tasks = client.list_tasks(cluster=test_cluster_name)
+        assert len(tasks['taskArns']) == 1
 
 
 @mock_aws
