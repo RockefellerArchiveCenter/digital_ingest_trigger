@@ -58,6 +58,7 @@ def run_task(ecs_client, config, task_definition, environment):
                 'assignPublicIp': 'DISABLED'
             }
         },
+        propagateTags='TASK_DEFINITION',
         taskDefinition=task_definition,
         count=1,
         startedBy='lambda/digital_ingest_trigger',
