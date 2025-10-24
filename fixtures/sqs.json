@@ -15,6 +15,10 @@
                   "stringValue": "20f8da26e268418ead4aa2365f816a08", 
                   "dataType": "String"
               },
+              "size": {
+                  "stringValue": "12345", 
+                  "dataType": "String"
+              },
               "service": {
                   "stringValue": "digital_ingest_assembly", 
                   "dataType": "String"
