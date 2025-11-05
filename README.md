@@ -14,13 +14,6 @@ cd digital_ingest_trigger
 
 This repository is intended to be deployed as a Lambda script in AWS infrastructure.
 
-### Expected Message Format
-
-The script is designed to consume message from an AWS Simple Queue Service (SQS) queue. These messages are expected have the following attributes:
-- `package_id` - an identifier associated with the package
-- `service` - the service which produced the message
-- `requested_status` - the desired status for the service (`STARTED`)
-
 ### Configured Actions
 
 The script takes the following actions:
@@ -29,6 +22,15 @@ The script takes the following actions:
 - SNS events:
     - Messages with a `requested_status` of `STARTED` result in the triggering of the service identified
     in the `service` attribute with the `package_id` passed into the envirohment.
+
+### Expected SQS Message Format
+
+Messages from an AWS Simple Queue Service (SQS) queue are expected have the following attributes:
+- `package_id` - an identifier associated with the package
+- `service` - the service which produced the message
+- `requested_status` - the desired status for the service (`STARTED`)
+
+If the message includes a `size` attribute, this value will be used to calculate the amount of temporary storage that should be attached to the task.
 
 ## License
 
