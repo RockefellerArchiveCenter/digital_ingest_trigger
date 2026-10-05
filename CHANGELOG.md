@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.4](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/compare/v1.0.3...v1.0.4) (2026-10-05)
+
+
+### Bug Fixes
+
+* **deps:** Scheduled dependency updates ([cde071a](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/cde071a24aee0fccefe1a5e88fec7b4c1b0ed1a1))
+* **deps:** Scheduled dependency updates ([cde071a](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/cde071a24aee0fccefe1a5e88fec7b4c1b0ed1a1))
+* **deps:** Scheduled dependency updates ([b670e0c](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/b670e0c3235336a6fcd675b884bb290c58b57655))
+* **deps:** Scheduled dependency updates ([b670e0c](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/b670e0c3235336a6fcd675b884bb290c58b57655))
+* **deps:** Scheduled dependency updates ([aee54f0](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/aee54f0c3c014052ca9b9abad51b67a7a86530bb))
+
 ## [1.0.3](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/compare/v1.0.2...v1.0.3) (2026-09-08)
 
 
