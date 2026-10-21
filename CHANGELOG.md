@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.0.5](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/compare/v1.0.4...v1.0.5) (2026-10-21)
+
+
+### Bug Fixes
+
+* update pip and deps ([c52dd74](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/c52dd74f351b476d38d67fc6efb026673d066c34))
+* update pip and deps ([c52dd74](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/c52dd74f351b476d38d67fc6efb026673d066c34))
+* update pip and deps ([309cdcd](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/309cdcdc55dbb764bb9d113e43274f5639f10391))
+* update pip and deps ([309cdcd](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/309cdcdc55dbb764bb9d113e43274f5639f10391))
+* update pip and deps ([d584f9d](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/commit/d584f9d4cef0885e79ab2e2f3a8fcb33e306ccfb))
+
 ## [1.0.4](https://github.com/RockefellerArchiveCenter/digital_ingest_trigger/compare/v1.0.3...v1.0.4) (2026-10-05)
 
 
